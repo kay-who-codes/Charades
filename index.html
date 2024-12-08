@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charades Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .phrase {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #333;
+    }
+    .timer {
+      font-size: 40px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+    .time-up {
+      color: red;
+      animation: flash 1s infinite;
+    }
+    @keyframes flash {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Charades</h1>
+    <p>Click the button to get a random word or phrase to act out!</p>
+    <button class="button" onclick="startGame()">Start Game</button>
+    <div class="phrase" id="phraseDisplay"></div>
+    <div class="timer" id="timerDisplay"></div>
+  </div>
+
+  <script>
+    const phrases = [
+      "Baking a cake",
+      "Driving a car",
+      "Swimming in a pool",
+      "Walking a dog",
+      "Playing a guitar",
+      "Climbing a mountain",
+      "Typing on a keyboard",
+      "Dancing ballet",
+      "Reading a book",
+      "Flying a kite"
+    ];
+
+    let countdownInterval;
+
+    function generatePhrase() {
+      const randomIndex = Math.floor(Math.random() * phrases.length);
+      const randomPhrase = phrases[randomIndex];
+      document.getElementById('phraseDisplay').textContent = randomPhrase;
+    }
+
+    function startTimer(duration) {
+      const timerDisplay = document.getElementById('timerDisplay');
+      let timeRemaining = duration;
+
+      timerDisplay.textContent = `${timeRemaining}s`;
+      timerDisplay.classList.remove('time-up');
+
+      countdownInterval = setInterval(() => {
+        timeRemaining--;
+        if (timeRemaining > 0) {
+          timerDisplay.textContent = `${timeRemaining}s`;
+        } else {
+          clearInterval(countdownInterval);
+          timerDisplay.textContent = "TIME'S UP!";
+          timerDisplay.classList.add('time-up');
+        }
+      }, 1000);
+    }
+
+    function startGame() {
+      clearInterval(countdownInterval); // Clear any existing countdown
+      generatePhrase();
+      startTimer(35); // Start a 35-second countdown
+    }
+  </script>
+</body>
+</html>
